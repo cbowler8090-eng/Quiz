@@ -18,6 +18,7 @@ struct QuizScreen: View {
             textInput
             submitAwnser
             Spacer()
+            easymodeButton
         }
         .padding()
         .alert(
@@ -31,19 +32,24 @@ struct QuizScreen: View {
             }
         )
     }
-    
     private var image: some View {
-        Image(viewModel.question)
+        if viewModel.easymode == true {
+            return Image(viewModel.question)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .brightness(viewModel.showResult ? 0: -1)
+                .frame(maxHeight: 250)
+                .padding(50)
+        }else { return Image(viewModel.quote)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .brightness(viewModel.showResult ? 0: -1)
+            .brightness(viewModel.showResult ? 0: 0)
             .frame(maxHeight: 250)
             .padding(50)
-            
-    }
-    
+            }
+        }
     private var title: some View {
-        Text("")
+        Text("guess the fnaf charicter by ther quote")
             .multilineTextAlignment(.center)
 //            .foregroundStyle(.yellow)
 //            .shadow(color: .black ,radius: 1, x: 3, y: 3)
@@ -64,6 +70,12 @@ struct QuizScreen: View {
             .padding()
             .bold()
             .frame(maxWidth: .infinity)
+        }
+    }
+    private var easymodeButton: some View {
+        
+        Button("Easy mode") {
+            viewModel.changeDifficulty()
         }
     }
 }
