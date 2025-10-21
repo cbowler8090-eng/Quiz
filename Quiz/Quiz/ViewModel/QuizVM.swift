@@ -8,7 +8,7 @@
 import Observation
 
 @Observable
-class  QuizVM {
+class QuizVM {
 
     private var quiz = Quiz()
     
@@ -26,18 +26,37 @@ class  QuizVM {
         wasCorrect = quiz.isValid(input)
         showResult = true
     }
-    
+//    func endQuiz() {
+//        if score == 10 {
+//            quiz.awnserd -= awnserd
+//            quiz.score -= score
+//            next()
+//        } else{next()}
+//    }
+    func reset() {
+        quiz.resetAwnserd()
+        quiz.resetScore()
+        input = ""
+        quiz.next()
+    }
     func next() {
         input = ""
         quiz.next()
     }
     private(set) var easymode = false
     
-    func changeDifficulty() {
+    func difficulty() -> String {
+        if easymode == true {
+            return "Hard mode"
+        } else {
+            return "Easy mode"
+        }
+    }
+    
+    func changeDifficulty(){
         if easymode == false {
             easymode = true
         }else {
-            easymode = false
-        }
+            easymode = false        }
     }
 }

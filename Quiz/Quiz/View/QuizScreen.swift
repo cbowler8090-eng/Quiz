@@ -6,11 +6,8 @@
 //
 
 import SwiftUI
-
 struct QuizScreen: View {
-    
     @State private var viewModel = QuizVM()
-    
     var body: some View {
         VStack(spacing:30){
             image
@@ -20,17 +17,26 @@ struct QuizScreen: View {
             Spacer()
             easymodeButton
         }
-        .padding()
+        .background{
+            Image(.fnafBG)
+                .resizable()
+                .ignoresSafeArea()
+        }
         .alert(
-            viewModel.wasCorrect ? "Corect!" : "wrong...",
-            isPresented: $viewModel.showResult,
-            actions: {
-                Button("next", action: viewModel.next)
-            },
-            message: {
-                Text("Score: \(viewModel.score) / \(viewModel.awnserd)")
-            }
+                viewModel.wasCorrect ? "Corect!" : "wrong...",
+                isPresented: $viewModel.showResult,
+                actions: { end },
+                message: {
+                    Text("Score: \(viewModel.score) / \(viewModel.awnserd)")
+                }
         )
+    }
+    private var end :some View {
+        return if viewModel.awnserd == 10 {
+            Button("End Quiz", action: viewModel.reset)
+        } else {
+            Button("next", action: viewModel.next)
+        }
     }
     private var image: some View {
         if viewModel.easymode == true {
@@ -49,18 +55,18 @@ struct QuizScreen: View {
             }
         }
     private var title: some View {
-        Text("guess the fnaf charicter by ther quote")
+        Text("Guess the fnaf animatronic by ther quote")
             .multilineTextAlignment(.center)
-//            .foregroundStyle(.yellow)
-//            .shadow(color: .black ,radius: 1, x: 3, y: 3)
-    
+            .background(.black)
+            .foregroundStyle(.white)
     }
     private var textInput: some View {
         TextField("Guess",text: $viewModel .input)
             .autocorrectionDisabled()
             .bold()
             .padding()
-            
+            .background(.black)
+            .foregroundStyle(.white)
     }
     
     private var submitAwnser: some View {
@@ -74,7 +80,7 @@ struct QuizScreen: View {
     }
     private var easymodeButton: some View {
         
-        Button("Easy mode") {
+        Button("\(viewModel.difficulty())") {
             viewModel.changeDifficulty()
         }
     }
@@ -83,3 +89,4 @@ struct QuizScreen: View {
 #Preview {
     QuizScreen()
 }
+
